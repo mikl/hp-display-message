@@ -9,6 +9,7 @@ Works for most network-enabled HP printers.
 import socket
 import sys
 import random
+import os.path
 
 # Default configuration
 host = 'hp4700'
@@ -45,9 +46,8 @@ except socket.error, e:
 
 print 'Connected'
 
-message = random_line('messages.txt').replace("\r\n", '').replace("\n", '')
-print message
+message = random_line(os.path.join(os.path.dirname(__file__), 'messages.txt')).replace("\r\n", '').replace("\n", '')
+print 'Setting ready message to "%s" on %s' % (message, host)
 command = "\x1B%%-12345X@PJL RDYMSG DISPLAY = \"%s\"\r\n\x1B%%-12345X\r\n" % message
-print command
 sock.sendall(command)
 
